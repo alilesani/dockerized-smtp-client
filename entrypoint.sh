@@ -17,4 +17,6 @@ echo "To: $EMAIL_TO" >> /tmp/email.txt
 echo "" >> /tmp/email.txt
 echo "$EMAIL_BODY" >> /tmp/email.txt
 
-cat /tmp/email.txt | msmtp --account=default --read-recipients
+for recipient in $(echo "$EMAIL_TO" | tr ',' ' '); do
+    msmtp --account=default --from="$SMTP_FROM" "$recipient" < /tmp/email.txt
+done
